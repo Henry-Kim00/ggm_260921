@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getWishlistedPostIds } from "@/lib/wishlist";
 import PostCard from "@/components/PostCard";
 import type { Post } from "@/lib/posts";
 
 export default async function PostsPage() {
   const supabase = await createClient();
-  const { data: posts } = await supabase
-    .from("ggm_posts")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .returns<Post[]>();
+  const [{ data: posts }, { data: { user } }] = await Promise.all([
+    supabase.from("ggm_posts").select("*").order("created_at", { ascending: false }).returns<Post[]>(),
+    supabase.auth.getUser(),
+  ]);
+
+  const wishlistedIds = user ? await getWishlistedPostIds(supabase, user.id) : new Set<string>();
 
   return (
     <main className="min-h-[calc(100vh-57px)] bg-[#fff3e6] px-4 py-8">
@@ -31,7 +33,12 @@ export default async function PostsPage() {
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard
+                key={post.id}
+                post={post}
+                wishlisted={wishlistedIds.has(post.id)}
+                isLoggedIn={Boolean(user)}
+              />
             ))}
           </div>
         )}

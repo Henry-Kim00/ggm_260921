@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import HeaderNav from "./HeaderNav";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -10,21 +11,14 @@ export default async function Header() {
       <Link href="/posts" className="font-brand text-lg text-[#7a3b1e]">
         🍠 고구마마켓
       </Link>
-      <nav className="flex items-center gap-2 text-sm font-semibold text-[#7a3b1e]">
+      <nav className="flex items-center gap-2 text-sm font-semibold">
         {user ? (
-          <>
-            <Link href="/posts" className="rounded-full bg-[#7a3b1e] px-4 py-2 text-white">
-              전체게시물 보기
-            </Link>
-            <Link href="/posts/mine" className="rounded-full border border-[#7a3b1e] px-4 py-2">
-              내게시물 보기
-            </Link>
-            <Link href="/" className="rounded-full border border-[#7a3b1e] px-4 py-2">
-              내 카드
-            </Link>
-          </>
+          <HeaderNav />
         ) : (
-          <Link href="/login" className="rounded-full border border-[#7a3b1e] px-4 py-2">
+          <Link
+            href="/login"
+            className="rounded-full border border-[#7a3b1e] px-4 py-2 text-[#7a3b1e]"
+          >
             로그인
           </Link>
         )}

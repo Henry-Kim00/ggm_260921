@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice, postImageUrl, type Post } from "@/lib/posts";
+import { getWishlistedPostIds } from "@/lib/wishlist";
 import StatusBadge from "@/components/StatusBadge";
 import PostOwnerActions from "@/components/PostOwnerActions";
+import WishlistButton from "@/components/WishlistButton";
 
 export default async function PostDetailPage({
   params,
@@ -30,6 +32,7 @@ export default async function PostDetailPage({
   ]);
 
   const isOwner = user?.id === post.user_id;
+  const wishlisted = user ? (await getWishlistedPostIds(supabase, user.id)).has(post.id) : false;
 
   return (
     <main className="min-h-[calc(100vh-57px)] bg-[#fff3e6] px-4 py-8">
@@ -57,6 +60,12 @@ export default async function PostDetailPage({
             <div className="absolute left-3 top-3">
               <StatusBadge status={post.status} />
             </div>
+            <WishlistButton
+              postId={post.id}
+              initialWishlisted={wishlisted}
+              isLoggedIn={Boolean(user)}
+              className="absolute bottom-3 right-3"
+            />
           </div>
 
           {post.images.length > 1 && (

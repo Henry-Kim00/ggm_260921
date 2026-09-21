@@ -40,6 +40,7 @@ export default function PostCard({
         <WishlistButton
           postId={post.id}
           initialWishlisted={wishlisted}
+          initialCount={post.wishlist_count}
           isLoggedIn={isLoggedIn}
           onRemove={onUnwishlist}
           className="absolute bottom-2 right-2"
@@ -48,7 +49,12 @@ export default function PostCard({
       <div className="p-3">
         <p className="truncate text-sm font-semibold text-[#3a2317]">{post.title}</p>
         <p className="mt-1 text-xs text-[#a5674a]">{post.category}</p>
-        <p className="mt-1 font-bold text-[#7a3b1e]">{formatPrice(post.price, post.is_free)}</p>
+        <div className="mt-1 flex items-center justify-between">
+          <p className="font-bold text-[#7a3b1e]">{formatPrice(post.price, post.is_free)}</p>
+          <span className="flex items-center gap-1 text-xs text-[#a5674a]">
+            💬 {post.comment_count}
+          </span>
+        </div>
       </div>
     </Link>
   );

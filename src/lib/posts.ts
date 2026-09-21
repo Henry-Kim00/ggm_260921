@@ -19,6 +19,7 @@ export type PostStatus = (typeof STATUSES)[number];
 
 export const MAX_IMAGES = 5;
 export const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+export const MAX_COMMENT_LENGTH = 500;
 
 export type Post = {
   id: string;
@@ -30,11 +31,20 @@ export type Post = {
   is_free: boolean;
   status: PostStatus;
   images: string[];
+  wishlist_count: number;
+  comment_count: number;
   created_at: string;
   updated_at: string;
 };
 
-export type PostWithSeller = Post & { seller: string };
+export type Comment = {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  author: { username: string } | null;
+};
 
 export function formatPrice(price: number, isFree: boolean): string {
   if (isFree) return "나눔";

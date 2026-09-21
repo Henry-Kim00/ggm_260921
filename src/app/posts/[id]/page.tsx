@@ -2,11 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { formatPrice, postImageUrl, type Post } from "@/lib/posts";
+import { formatPrice, postImageUrl, type Comment, type Post } from "@/lib/posts";
 import { getWishlistedPostIds } from "@/lib/wishlist";
 import StatusBadge from "@/components/StatusBadge";
 import PostOwnerActions from "@/components/PostOwnerActions";
 import WishlistButton from "@/components/WishlistButton";
+import CommentSection from "@/components/CommentSection";
 
 export default async function PostDetailPage({
   params,
@@ -26,9 +27,15 @@ export default async function PostDetailPage({
     notFound();
   }
 
-  const [{ data: profile }, { data: { user } }] = await Promise.all([
+  const [{ data: profile }, { data: { user } }, { data: comments }] = await Promise.all([
     supabase.from("ggm_profiles").select("username").eq("id", post.user_id).single(),
     supabase.auth.getUser(),
+    supabase
+      .from("ggm_comments")
+      .select("id, post_id, user_id, content, created_at, author:ggm_profiles(username)")
+      .eq("post_id", id)
+      .order("created_at", { ascending: true })
+      .returns<Comment[]>(),
   ]);
 
   const isOwner = user?.id === post.user_id;
@@ -63,6 +70,7 @@ export default async function PostDetailPage({
             <WishlistButton
               postId={post.id}
               initialWishlisted={wishlisted}
+              initialCount={post.wishlist_count}
               isLoggedIn={Boolean(user)}
               className="absolute bottom-3 right-3"
             />
@@ -98,6 +106,8 @@ export default async function PostDetailPage({
             <PostOwnerActions postId={post.id} status={post.status} />
           </div>
         )}
+
+        <CommentSection postId={post.id} comments={comments ?? []} currentUserId={user?.id} />
       </div>
     </main>
   );

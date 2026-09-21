@@ -8,6 +8,7 @@ import StatusBadge from "@/components/StatusBadge";
 import PostOwnerActions from "@/components/PostOwnerActions";
 import WishlistButton from "@/components/WishlistButton";
 import CommentSection from "@/components/CommentSection";
+import GogumaBuddy from "@/components/GogumaBuddy";
 
 export default async function PostDetailPage({
   params,
@@ -43,7 +44,8 @@ export default async function PostDetailPage({
 
   return (
     <main className="min-h-[calc(100vh-57px)] bg-[#fff3e6] px-4 py-8">
-      <div className="mx-auto max-w-lg">
+      <GogumaBuddy />
+      <div className="relative mx-auto max-w-lg">
         <Link
           href="/posts"
           className="mb-4 inline-flex items-center gap-1 text-sm font-semibold text-[#7a3b1e]"

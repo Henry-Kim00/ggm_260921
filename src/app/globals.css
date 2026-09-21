@@ -53,3 +53,71 @@ body {
     transform: translateX(220%) rotate(8deg);
   }
 }
+
+/* 상세 페이지 여백을 돌아다니는 고구마 캐릭터 */
+.goguma-buddy {
+  animation: goguma-roam 26s ease-in-out infinite;
+}
+
+.goguma-bob {
+  animation: goguma-bob 1.6s ease-in-out infinite;
+}
+
+.goguma-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: goguma-blink 4.2s ease-in-out infinite;
+}
+
+@keyframes goguma-roam {
+  0% {
+    transform: translate(0, 0) rotate(-5deg);
+  }
+  20% {
+    transform: translate(4.5rem, 20vh) rotate(6deg);
+  }
+  40% {
+    transform: translate(-0.5rem, 42vh) rotate(-7deg);
+  }
+  60% {
+    transform: translate(5rem, 55vh) rotate(5deg);
+  }
+  80% {
+    transform: translate(1rem, 22vh) rotate(-4deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(-5deg);
+  }
+}
+
+@keyframes goguma-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes goguma-blink {
+  0%,
+  86%,
+  90%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  88%,
+  92% {
+    transform: scaleY(0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goguma-buddy,
+  .goguma-bob,
+  .goguma-eye {
+    animation: none;
+  }
+}

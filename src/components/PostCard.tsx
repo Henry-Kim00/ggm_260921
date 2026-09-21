@@ -8,10 +8,12 @@ export default function PostCard({
   post,
   wishlisted,
   isLoggedIn,
+  onUnwishlist,
 }: {
   post: Post;
   wishlisted: boolean;
   isLoggedIn: boolean;
+  onUnwishlist?: () => void;
 }) {
   const thumb = post.images[0];
 
@@ -39,6 +41,7 @@ export default function PostCard({
           postId={post.id}
           initialWishlisted={wishlisted}
           isLoggedIn={isLoggedIn}
+          onRemove={onUnwishlist}
           className="absolute bottom-2 right-2"
         />
       </div>

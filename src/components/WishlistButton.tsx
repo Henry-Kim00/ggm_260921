@@ -9,11 +9,13 @@ export default function WishlistButton({
   initialWishlisted,
   isLoggedIn,
   className = "",
+  onRemove,
 }: {
   postId: string;
   initialWishlisted: boolean;
   isLoggedIn: boolean;
   className?: string;
+  onRemove?: () => void;
 }) {
   const [wishlisted, setWishlisted] = useState(initialWishlisted);
   const [pending, startTransition] = useTransition();
@@ -30,6 +32,9 @@ export default function WishlistButton({
 
     const next = !wishlisted;
     setWishlisted(next);
+    if (!next) {
+      onRemove?.();
+    }
     startTransition(async () => {
       try {
         const result = await toggleWishlist(postId);

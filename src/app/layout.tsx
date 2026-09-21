@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Jua, Noto_Sans_KR } from "next/font/google";
+import Header from "@/components/Header";
 import "./globals.css";
 
 const jua = Jua({
@@ -25,7 +26,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="ko"
       className={`${jua.variable} ${notoSansKr.variable} h-full antialiased`}
     >
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
